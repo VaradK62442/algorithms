@@ -25,6 +25,13 @@ def main():
 
     print(f"\nOriginal == Decompressed: {text == decompressed}")
 
+    # assume 7 bits per character for original text
+    original_size = 7 * len(text)
+    compressed_size = len(compressed)
+
+    print(f"\nCompression ratio: {compressed_size / original_size:.2f}")
+    print(f"Saved space: {(1 - compressed_size / original_size) * 100:.2f}%")
+
 
 if __name__ == '__main__':
     main()
