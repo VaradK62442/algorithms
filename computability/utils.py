@@ -41,49 +41,40 @@ def DFA_intersection(dfa1: DFA, dfa2: DFA):
     return DFA_combine(dfa1, dfa2, lambda x, y: x.intersection(y))
 
 
+def DFA_complement(dfa: DFA):
+    return DFA(
+        input_alphabet=dfa._input_alphabet,
+        states=dfa._states,
+        initial_state=dfa._initial_state,
+        accepting_states=dfa._states - dfa._accepting_states,
+        transitions=dfa._transitions
+    )
+
+
 def main():
     alphabet = {'a', 'b'}
 
-    dfa1 = DFA(
+    dfa = DFA(
         input_alphabet=alphabet,
-        states={'q1', 'q2', 'q3', 'q4'},
-        initial_state='q1',
-        accepting_states={'q4'},
+        states={'q0', 'q1', 'q2'},
+        initial_state='q0',
+        accepting_states={'q2'},
         transitions={
-            ('q1', 'a'): 'q2',
-            ('q1', 'b'): 'q1',
-            ('q2', 'a'): 'q3',
-            ('q2', 'b'): 'q2',
-            ('q3', 'a'): 'q4',
-            ('q3', 'b'): 'q3',
-            ('q4', 'a'): 'q4',
-            ('q4', 'b'): 'q4'
-        }
-    )
-
-    dfa2 = DFA(
-        input_alphabet=alphabet,
-        states={'q1', 'q2', 'q3'},
-        initial_state='q1',
-        accepting_states={'q3'},
-        transitions={
+            ('q0', 'a'): 'q1',
+            ('q0', 'b'): 'q0',
             ('q1', 'a'): 'q1',
             ('q1', 'b'): 'q2',
             ('q2', 'a'): 'q2',
-            ('q2', 'b'): 'q3',
-            ('q3', 'a'): 'q3',
-            ('q3', 'b'): 'q3',
+            ('q2', 'b'): 'q2'
         }
     )
 
-    M_u = DFA_union(dfa1, dfa2)
-    M_i = DFA_intersection(dfa1, dfa2)
+    dfa_complement = DFA_complement(dfa)
 
-    M_u.set_string("abb")
-    M_i.set_string("aaabb")
-    print(M_u.run())
-    print(M_i.run())
+    dfa.set_string("aaaba")
+    dfa_complement.set_string("aaaba")
 
+    assert dfa.run() != dfa_complement.run()
 
 if __name__ == '__main__':
     main()
