@@ -29,6 +29,19 @@ class FiniteStateAutomata:
         self._string = None
 
     
+    def __str__(self):
+        res = f"""
+        Input alphabet: {self._input_alphabet}
+        States: 
+            {', '.join([s for s in self._states])}
+        Initial state: {self._initial_state}
+        Accepting states: {self._accepting_states}
+        Transitions: 
+        """
+        res += "\n\t".join([f"""({state}, {char}) -> {self._transitions[(f'{state}', char)]}""" for state in self._states for char in self._input_alphabet])
+        return res
+
+    
     def set_string(self, string):
         if not all(char in self._input_alphabet for char in string):
             raise ValueError("String contains characters not in input alphabet")
